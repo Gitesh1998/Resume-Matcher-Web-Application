@@ -1,0 +1,23 @@
+{% extends 'resumes/base.html' %}
+{% block content %}
+<h3>Uploaded Resumes</h3>
+<form method="post" enctype="multipart/form-data" action="{% url 'upload_resume' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary">Upload</button>
+</form>
+
+<form method="post" action="{% url 'match_resumes' %}">
+  {% csrf_token %}
+  {{ job_form.as_p }}
+  <button class="btn btn-success">Match</button>
+</form>
+
+<ul>
+  {% for resume in resumes %}
+    <li>{{ resume.name }} - {{ resume.uploaded_at }}
+      <a href="{% url 'delete_resume' resume.id %}" class="btn btn-sm btn-danger">Delete</a>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
