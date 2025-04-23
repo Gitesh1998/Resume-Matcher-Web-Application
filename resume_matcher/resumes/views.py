@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Resume, MatchResult
 from .forms import ResumeUploadForm, JobDescriptionForm
 from django.contrib.auth.decorators import login_required
@@ -55,3 +55,26 @@ def match_resumes(request):
 def delete_resume(request, resume_id):
     Resume.objects.get(id=resume_id, user=request.user).delete()
     return redirect('dashboard')
+
+@login_required
+def list_resumes(request):
+    upload_dir = get_uploaded_resumes_dir()
+    file_list = os.listdir(upload_dir)
+
+    resumes = []
+    for filename in file_list:
+        file_path = os.path.join(settings.MEDIA_URL, 'resumes', filename)
+        resumes.append({
+            'filename': filename,
+            'url': file_path
+        })
+
+    return render(request, 'resumes/list_resumes.html', {'resumes': resumes})
+
+
+@login_required
+def delete_resume(request, filename):
+    file_path = os.path.join(settings.MEDIA_ROOT, 'resumes', filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    return redirect('list_resumes')

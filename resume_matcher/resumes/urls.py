@@ -7,4 +7,6 @@ urlpatterns = [
     path('upload/', views.upload_resume, name='upload_resume'),
     path('match/', views.match_resumes, name='match_resumes'),
     path('', views.dashboard, name='dashboard'),
+    path('resumes/', views.list_resumes, name='list_resumes'),
+    path('resumes/delete/<str:filename>/', views.delete_resume, name='delete_resume'),
 ]
