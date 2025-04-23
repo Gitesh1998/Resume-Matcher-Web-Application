@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Resume, MatchResult
 from .forms import ResumeUploadForm, JobDescriptionForm
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.utils.timezone import now
 import os
 import re
@@ -55,3 +56,17 @@ def match_resumes(request):
             results.sort(key=lambda x: x.match_percent, reverse=True)
             return render(request, 'resumes/match_results.html', {'results': results})
     return redirect('dashboard')
+
+def about_view(request):
+    return render(request, 'resumes/about.html')
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect after successful signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'resumes/signup.html', {'form': form})
