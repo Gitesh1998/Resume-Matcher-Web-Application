@@ -175,3 +175,5 @@ cython_debug/
 
 
 env-resume
+
+resume_matcher/media
