@@ -10,6 +10,11 @@ import re
 import PyPDF2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
+from django.contrib.auth.views import LogoutView
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from .resume_matcher import match_resume_to_job
 
@@ -78,3 +83,21 @@ def delete_resume(request, filename):
     if os.path.exists(file_path):
         os.remove(file_path)
     return redirect('list_resumes')
+
+def about_view(request):
+    return render(request, 'resumes/about.html')
+
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect after successful signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'resumes/signup.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

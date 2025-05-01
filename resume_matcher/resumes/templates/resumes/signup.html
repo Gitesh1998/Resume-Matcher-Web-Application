@@ -2,11 +2,11 @@
 
 {% block content %}
   <div class="container mt-4">
-      <h2>Login</h2>
+      <h2>Sign Up</h2>
       <form method="post">
           {% csrf_token %}
           {{ form.as_p }}
-          <button type="submit" class="btn btn-primary" href="{% url 'about' %}">Login</button>
+          <button type="submit" class="btn btn-primary" href="{% url 'about' %}">Sign Up</button>
       </form>
   </div>
 {% endblock %}
