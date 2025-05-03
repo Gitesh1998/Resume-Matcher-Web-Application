@@ -110,7 +110,7 @@ def list_resumes(request):
 
     resumes = []
     for filename in file_list:
-        file_path = os.path.join(settings.MEDIA_URL, 'resumes', filename)
+        file_path = os.path.join(settings.MEDIA_URL, 'resumes', str(request.user.id), filename)
         resumes.append({
             'filename': filename,
             'url': file_path
@@ -119,12 +119,15 @@ def list_resumes(request):
     return render(request, 'resumes/list_resumes.html', {'resumes': resumes})
 
 
+
 @login_required
 def delete_resume(request, filename):
-    file_path = os.path.join(settings.MEDIA_ROOT, 'resumes', filename)
+    user_dir = get_uploaded_resumes_dir(request.user.id)
+    file_path = os.path.join(user_dir, filename)
     if os.path.exists(file_path):
         os.remove(file_path)
     return redirect('list_resumes')
+
 
 
 @login_required

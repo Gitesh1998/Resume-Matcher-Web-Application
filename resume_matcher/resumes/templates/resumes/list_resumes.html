@@ -1,46 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>All Resumes</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body class="container py-5">
-    <h2 class="mb-4">Uploaded Resumes</h2>
-    <a href="{% url 'dashboard' %}" class="btn btn-link mb-3"
-      >← Back to Dashboard</a
-    >
-    {% if resumes %}
-    <table class="table table-bordered table-hover">
-      <thead class="table-light">
-        <tr>
-          <th>Filename</th>
-          <th>Uploaded At</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for resume in resumes %}
-        <tr>
-          <td>{{ resume.filename }}</td>
-          <td><a href="{{ resume.url }}" target="_blank">View</a></td>
-          <td>
-            <form method="post" action="{% url 'delete_resume' resume.filename %}" onsubmit="return confirm('Delete this resume?');">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-sm btn-danger">
-                Delete
-              </button>
-            </form>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <p>No resumes uploaded yet.</p>
-    {% endif %}
-  </body>
-</html>
+{% extends 'resumes/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Uploaded Resumes</h2>
+<a href="{% url 'dashboard' %}" class="btn btn-link mb-3">← Back to Dashboard</a>
+
+{% if resumes %}
+<table class="table table-bordered table-hover">
+  <thead class="table-light">
+    <tr>
+      <th>Filename</th>
+      <th>Uploaded At</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for resume in resumes %}
+    <tr>
+      <td>{{ resume.filename }}</td>
+      <td><a href="{{ resume.url }}" target="_blank">View</a></td>
+      <td>
+        <form method="post" action="{% url 'delete_resume' resume.filename %}" onsubmit="return confirm('Delete this resume?');">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No resumes uploaded yet.</p>
+{% endif %}
+{% endblock %}

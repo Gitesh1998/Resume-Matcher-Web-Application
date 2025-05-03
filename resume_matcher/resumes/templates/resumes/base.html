@@ -22,6 +22,9 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'upload_page' %}">Upload Resume</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'list_resumes' %}">All Resumes</a>  <!-- ✅ New Link -->
+          </li>
         </ul>
         <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
@@ -38,12 +41,9 @@
       </div>
     </nav>
 
-    <!-- 🔧 INSERT THIS BLOCK -->
     <div class="container mt-4">
       {% block content %}
       {% endblock %}
     </div>
-    <!-- ✅ -->
-
   </body>
 </html>
