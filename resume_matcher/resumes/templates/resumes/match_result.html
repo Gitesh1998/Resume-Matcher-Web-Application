@@ -1,0 +1,25 @@
+{% extends 'resumes/base.html' %}
+{% block content %}
+<div class="card p-4">
+  <h3 class="mb-3">Best Matched Resume</h3>
+  {% if matched_resume %}
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Filename</th>
+        <th>Similarity %</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ matched_resume.filename }}</td>
+        <td>{{ matched_resume.similarity }}%</td>
+      </tr>
+    </tbody>
+  </table>
+  <a href="{{ matched_resume.download_url }}" class="btn btn-info">Download Resume</a>
+  {% else %}
+  <p>No match result found.</p>
+  {% endif %}
+</div>
+{% endblock %}

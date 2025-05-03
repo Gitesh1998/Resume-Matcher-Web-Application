@@ -1,82 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .dashboard-card {
-            background-color: #fff;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            padding: 2rem;
-        }
-        .form-label {
-            font-weight: 500;
-        }
-        .btn-primary, .btn-success, .btn-info {
-            border-radius: 0.5rem;
-        }
-    </style>
-</head>
-<body class="py-5">
-<div class="container">
-    <div class="dashboard-card mx-auto" style="max-width: 800px;">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-0">Welcome to the Resume matcher</h2>
-            <form action="{% url 'logout' %}" method="post" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Logout</button>
-            </form>
-        </div>
-
-        <hr>
-
-        <h4 class="mb-3">Upload Resume (PDF)</h4>
-        <form action="{% url 'upload_resume' %}" method="post" enctype="multipart/form-data" class="mb-4">
-            {% csrf_token %}
-            <label class="form-label" for="resumeUpload">Choose PDF Resume</label>
-            <input type="file" id="resumeUpload" name="resume" accept=".pdf" class="form-control mb-3" required>
-            <button type="submit" class="btn btn-primary">Upload Resume</button>
-        </form>
-
-        <h4 class="mb-3">Enter Job Description</h4>
-        <form action="{% url 'match_resumes' %}" method="post" class="mb-4">
-            {% csrf_token %}
-            <label class="form-label" for="jobDescription">Paste Job Description Below</label>
-            <textarea id="jobDescription" name="job_description" rows="5" class="form-control mb-3" required></textarea>
-            <button type="submit" class="btn btn-success">Match Resumes</button>
-        </form>
-
-        {% if matched_resume %}
-        <hr>
-        <h4 class="mb-3">Best Matched Resume</h4>
-        <table class="table table-hover table-bordered mb-3">
-            <thead class="table-light">
-                <tr>
-                    <th>Filename</th>
-                    <th>Similarity %</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ matched_resume.filename }}</td>
-                    <td>{{ matched_resume.similarity }}%</td>
-                </tr>
-            </tbody>
-        </table>
-        <a href="{{ matched_resume.download_url }}" class="btn btn-info">Download Resume</a>
-        {% endif %}
+{% extends 'resumes/base.html' %}
+{% block content %}
+<div class="card p-4">
+  <h3 class="mb-3">Match Your Resume to a Job Description</h3>
+  <form action="{% url 'match_resumes' %}" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="jobDescription" class="form-label">Paste Job Description</label>
+      <textarea id="jobDescription" name="job_description" class="form-control" rows="5" required></textarea>
     </div>
-
-    <hr>
-    <div class="text-center mt-4">
-        <a href="{% url 'list_resumes' %}" class="btn btn-outline-secondary">List All Resumes</a>
-    </div>
-
+    <button type="submit" class="btn btn-success">Match Resumes</button>
+  </form>
 </div>
-</body>
-</html>
+{% endblock %}
+<p>Hello from Dashboard</p>

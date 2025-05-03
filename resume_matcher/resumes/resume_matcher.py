@@ -34,3 +34,4 @@ def match_resume_to_job(job_desc, resumes_dir):
         'download_url': f"/media/resumes/{filenames[best_idx]}"
     }
     return best_match
+
