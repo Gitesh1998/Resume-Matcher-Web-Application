@@ -30,19 +30,10 @@ def get_uploaded_resumes_dir(user_id):
 
 @login_required
 def dashboard(request):
+    print("DASHBOARD VIEW CALLED")
     resumes = Resume.objects.filter(user=request.user)
     return render(request, 'resumes/dashboard.html', {'resumes': resumes})
 
-
-# @login_required
-# def upload_resume(request):
-#     if request.method == 'POST' and request.FILES.get('resume'):
-#         resume_file = request.FILES['resume']
-#         upload_dir = get_uploaded_resumes_dir()
-#         fs = FileSystemStorage(location=upload_dir)
-#         fs.save(resume_file.name, resume_file)
-
-#     return redirect('dashboard')
 
 
 def upload_resume(request):
@@ -154,6 +145,3 @@ def upload_page(request):
 def logout_view(request):
     logout(request)
     return redirect('dashboard') 
-
-def dashboard(request):
-    return render(request, 'resumes/dashboard.html')
