@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-5">
+{% extends 'resumes/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
     <h2>Login</h2>
     <form method="post">
         {% csrf_token %}
@@ -17,18 +14,17 @@
             <input type="password" name="password" class="form-control" id="id_password" required>
         </div>
         <button type="submit" class="btn btn-primary">Login</button>
-        
     </form>
+
     <p class="mt-3">
         Don't have an account?
         <a href="{% url 'signup' %}" class="btn btn-outline-secondary ms-2">Sign Up</a>
     </p>
-    
 
     {% if form.errors %}
         <div class="alert alert-danger mt-3">
             Invalid username or password.
         </div>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}
