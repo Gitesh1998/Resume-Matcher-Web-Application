@@ -11,6 +11,7 @@ import PyPDF2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from django.contrib.auth import logout
+from django.contrib import messages
 
 from .resume_matcher import match_resume_to_job
 
@@ -79,16 +80,24 @@ def upload_resume(request):
 #     })
 
 @login_required
-@login_required
 def match_resumes(request):
     if request.method == 'POST':
-        job_desc = request.POST['job_description']
+        job_desc = request.POST.get('job_description', '').strip()
+        if not job_desc:
+            messages.error(request, "Job description cannot be empty.")
+            return redirect('dashboard')
+
         user = request.user
         upload_dir = get_uploaded_resumes_dir(user.id)
-        matched_resume = match_resume_to_job(job_desc, upload_dir)
 
+        # ✅ Check if resume directory exists and has files
+        if not os.path.exists(upload_dir) or not os.listdir(upload_dir):
+            messages.error(request, "You have not uploaded any resumes yet.")
+            return redirect('dashboard')
+
+        matched_resume = match_resume_to_job(job_desc, upload_dir)
         if matched_resume:
-            request.session['matched_resume'] = matched_resume  # Save result for next page
+            request.session['matched_resume'] = matched_resume
         return redirect('match_result')
 
     return redirect('dashboard')
