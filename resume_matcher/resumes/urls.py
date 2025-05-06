@@ -10,4 +10,5 @@ urlpatterns = [
     path('resumes/', views.list_resumes, name='list_resumes'),
     path('resumes/delete/<str:filename>/', views.delete_resume, name='delete_resume'),
     path('logout/', views.logout_view, name='logout'),
+    path('about/', views.about_view, name='about'),
 ]

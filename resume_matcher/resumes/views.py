@@ -34,6 +34,9 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'resumes/signup.html', {'form': form})
 
+def about_view(request):
+    return render(request, 'resumes/about.html')
+
 def get_uploaded_resumes_dir(user_id):
     path = os.path.join(settings.MEDIA_ROOT, 'resumes', str(user_id))
     os.makedirs(path, exist_ok=True)
