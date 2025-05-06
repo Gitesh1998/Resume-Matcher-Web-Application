@@ -21,6 +21,19 @@ from .resume_matcher import match_resume_to_job
 #     os.makedirs(path, exist_ok=True)
 #     return path
 
+
+from django.contrib.auth.forms import UserCreationForm
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirect to login after signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'resumes/signup.html', {'form': form})
+
 def get_uploaded_resumes_dir(user_id):
     path = os.path.join(settings.MEDIA_ROOT, 'resumes', str(user_id))
     os.makedirs(path, exist_ok=True)
