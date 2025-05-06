@@ -13,41 +13,46 @@
       <a class="navbar-brand" href="{% url 'dashboard' %}">Resume Matcher</a>
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
-          </li>
+          {% if not user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+            </li>
+          {% endif %}
+
           <li class="nav-item">
             <a class="nav-link" href="{% url 'about' %}">About</a>
           </li>
+
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard' %}">Match Resume</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'match_result' %}">Match Result</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'upload_page' %}">Upload Resume</a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'list_resumes' %}">All Resumes</a>  <!-- ✅ New Link -->
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">Match Resume</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'match_result' %}">Match Result</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'upload_page' %}">Upload Resume</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'list_resumes' %}">All Resumes</a>  <!-- ✅ New Link -->
+            </li>
           {% endif %}
+
         </ul>
         <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <form action="{% url 'logout' %}" method="post" class="d-inline">
-              {% csrf_token %}
-              <button class="btn btn-sm btn-outline-danger" type="submit">
-                Logout
-              </button>
-            </form>
-          </li>
+            <li class="nav-item">
+              <form action="{% url 'logout' %}" method="post" class="d-inline">
+                {% csrf_token %}
+                <button class="btn btn-sm btn-outline-danger" type="submit">
+                  Logout
+                </button>
+              </form>
+            </li>
           {% endif %}
         </ul>
       </div>
