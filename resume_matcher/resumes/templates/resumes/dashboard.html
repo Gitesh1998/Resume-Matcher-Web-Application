@@ -9,7 +9,6 @@
   {% endfor %}
 {% endif %}
 
-
 <div class="card p-4">
   <h3 class="mb-3">Match Your Resume to a Job Description</h3>
   <form action="{% url 'match_resumes' %}" method="post">
@@ -19,6 +18,29 @@
       <textarea id="jobDescription" name="job_description" class="form-control" rows="5" required></textarea>
     </div>
     <button type="submit" class="btn btn-info">Match Resumes</button>
+    <button type="button" class="btn btn-secondary ms-2" onclick="clearTextarea()">Clear</button>
   </form>
 </div>
+
+<script>
+  const textarea = document.getElementById("jobDescription");
+
+  // Load saved content from localStorage on page load
+  window.addEventListener("DOMContentLoaded", () => {
+    const saved = localStorage.getItem("jobDescription");
+    if (saved) textarea.value = saved;
+  });
+
+  // Save content to localStorage on input
+  textarea.addEventListener("input", () => {
+    localStorage.setItem("jobDescription", textarea.value);
+  });
+
+  // Clear function
+  function clearTextarea() {
+    textarea.value = "";
+    localStorage.removeItem("jobDescription");
+  }
+</script>
+
 {% endblock %}

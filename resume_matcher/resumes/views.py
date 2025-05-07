@@ -108,7 +108,7 @@ def match_resumes(request):
             messages.error(request, "You have not uploaded any resumes yet.")
             return redirect('dashboard')
 
-        matched_resumes = match_resume_to_job(job_desc, upload_dir)
+        matched_resumes = match_resume_to_job(job_desc, upload_dir, request.user.id)
         if matched_resumes:
             # Store the list of matches in session for display
             request.session['matched_resumes'] = matched_resumes
