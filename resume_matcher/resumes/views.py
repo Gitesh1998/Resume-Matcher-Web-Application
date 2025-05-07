@@ -16,13 +16,6 @@ from django.contrib import messages
 from .resume_matcher import match_resume_to_job
 
 
-# ✅ Use this helper function
-# def get_uploaded_resumes_dir():
-#     path = os.path.join(settings.MEDIA_ROOT, 'resumes')
-#     os.makedirs(path, exist_ok=True)
-#     return path
-
-
 from django.contrib.auth.forms import UserCreationForm
 
 def signup_view(request):
@@ -65,31 +58,6 @@ def upload_resume(request):
         fs.save(resume_file.name, resume_file)
 
     return redirect('dashboard')
-
-
-
-# @login_required
-# def match_resumes(request):
-#     if request.method == 'POST':
-#         job_desc = request.POST.get('job_description', '').strip()
-#         if not job_desc:
-#             messages.error(request, "Job description cannot be empty.")
-#             return redirect('dashboard')
-
-#         user = request.user
-#         upload_dir = get_uploaded_resumes_dir(user.id)
-
-#         # ✅ Check if resume directory exists and has files
-#         if not os.path.exists(upload_dir) or not os.listdir(upload_dir):
-#             messages.error(request, "You have not uploaded any resumes yet.")
-#             return redirect('dashboard')
-
-#         matched_resume = match_resume_to_job(job_desc, upload_dir)
-#         if matched_resume:
-#             request.session['matched_resume'] = matched_resume
-#         return redirect('match_result')
-
-#     return redirect('dashboard')
 
 
 

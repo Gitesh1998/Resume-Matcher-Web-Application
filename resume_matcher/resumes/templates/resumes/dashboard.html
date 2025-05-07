@@ -25,18 +25,15 @@
 <script>
   const textarea = document.getElementById("jobDescription");
 
-  // Load saved content from localStorage on page load
   window.addEventListener("DOMContentLoaded", () => {
     const saved = localStorage.getItem("jobDescription");
     if (saved) textarea.value = saved;
   });
 
-  // Save content to localStorage on input
   textarea.addEventListener("input", () => {
     localStorage.setItem("jobDescription", textarea.value);
   });
 
-  // Clear function
   function clearTextarea() {
     textarea.value = "";
     localStorage.removeItem("jobDescription");
