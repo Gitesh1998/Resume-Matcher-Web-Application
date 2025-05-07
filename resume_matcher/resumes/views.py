@@ -67,17 +67,31 @@ def upload_resume(request):
     return redirect('dashboard')
 
 
+
 # @login_required
 # def match_resumes(request):
-#     matched_resume = None
 #     if request.method == 'POST':
-#         job_desc = request.POST['job_description']
-#         upload_dir = get_uploaded_resumes_dir()
-#         matched_resume = match_resume_to_job(job_desc, upload_dir)
+#         job_desc = request.POST.get('job_description', '').strip()
+#         if not job_desc:
+#             messages.error(request, "Job description cannot be empty.")
+#             return redirect('dashboard')
 
-#     return render(request, 'resumes/dashboard.html', {
-#         'matched_resume': matched_resume
-#     })
+#         user = request.user
+#         upload_dir = get_uploaded_resumes_dir(user.id)
+
+#         # ✅ Check if resume directory exists and has files
+#         if not os.path.exists(upload_dir) or not os.listdir(upload_dir):
+#             messages.error(request, "You have not uploaded any resumes yet.")
+#             return redirect('dashboard')
+
+#         matched_resume = match_resume_to_job(job_desc, upload_dir)
+#         if matched_resume:
+#             request.session['matched_resume'] = matched_resume
+#         return redirect('match_result')
+
+#     return redirect('dashboard')
+
+
 
 @login_required
 def match_resumes(request):
@@ -90,37 +104,20 @@ def match_resumes(request):
         user = request.user
         upload_dir = get_uploaded_resumes_dir(user.id)
 
-        # ✅ Check if resume directory exists and has files
         if not os.path.exists(upload_dir) or not os.listdir(upload_dir):
             messages.error(request, "You have not uploaded any resumes yet.")
             return redirect('dashboard')
 
-        matched_resume = match_resume_to_job(job_desc, upload_dir)
-        if matched_resume:
-            request.session['matched_resume'] = matched_resume
+        matched_resumes = match_resume_to_job(job_desc, upload_dir)
+        if matched_resumes:
+            # Store the list of matches in session for display
+            request.session['matched_resumes'] = matched_resumes
+        else:
+            messages.error(request, "No resumes matched.")
         return redirect('match_result')
 
     return redirect('dashboard')
 
-
-
-# def match_resumes(request):
-#     matched_resume = None
-#     if request.method == 'POST':
-#         # grab the job description
-#         job_desc = request.POST['job_description']
-        
-#         # print user info to local console
-#         user = request.user
-#         print(f'User ID: {user.id}, Username: {user.username}')
-        
-#         # do your matching
-#         upload_dir = get_uploaded_resumes_dir(user.id)
-#         matched_resume = match_resume_to_job(job_desc, upload_dir)
-
-#     return render(request, 'resumes/dashboard.html', {
-#         'matched_resume': matched_resume
-#     })
 
 
 @login_required

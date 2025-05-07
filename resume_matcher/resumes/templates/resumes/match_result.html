@@ -1,25 +1,33 @@
 {% extends 'resumes/base.html' %}
 {% block content %}
 <div class="card p-4">
-  <h3 class="mb-3">Best Matched Resume</h3>
-  {% if matched_resume %}
+  <h3 class="mb-3">Top Matched Resumes</h3>
+  {% if request.session.matched_resumes %}
   <table class="table table-bordered">
     <thead>
       <tr>
+        <th>#</th>
         <th>Filename</th>
         <th>Similarity %</th>
+        <th>Download</th>
       </tr>
     </thead>
     <tbody>
+      {% for resume in request.session.matched_resumes %}
       <tr>
-        <td>{{ matched_resume.filename }}</td>
-        <td>{{ matched_resume.similarity }}%</td>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ resume.filename }}</td>
+        <td>{{ resume.similarity }}%</td>
+        <td>
+          <a href="{{ resume.download_url }}" class="btn btn-sm btn-info">Download</a>
+        </td>
       </tr>
+      {% endfor %}
     </tbody>
   </table>
-  <a href="{{ matched_resume.download_url }}" class="btn btn-info">Download Resume</a>
   {% else %}
   <p>No match result found.</p>
   {% endif %}
 </div>
 {% endblock %}
+
